@@ -72,4 +72,3 @@ const Styles = StyleSheet.create({
 });
 
 export default Practise;
-

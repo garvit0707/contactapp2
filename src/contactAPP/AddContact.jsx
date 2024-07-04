@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity,Image} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import { ActivityIndicator } from 'react-native';
-import { hp, wp } from 'react-native-responsive-screen'; 
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const AddContact = ({ navigation, route }) => {
   const { setDatas } = route.params;
-
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [display,setDisplay] = useState(false)
+
+
+
+  const handlebacked = () =>{
+    navigation.navigate("CONTACT-APP")
+  }
 
   const handleData = () => {  
     if (name && number) {
@@ -33,7 +38,7 @@ const AddContact = ({ navigation, route }) => {
             textColor: "green"
           }
         })
-      }else if ((number.length)<10){
+      }else if ((number.length)<10 && (number.length>10)){
         Snackbar.show({
           text: "Enter  10 digit number only!!",
           duration: Snackbar.LENGTH_SHORT,
@@ -42,31 +47,31 @@ const AddContact = ({ navigation, route }) => {
             textColor: "green"
           }
       })}
-        else{
-          Snackbar.show({
-            text: "Succesfully registered",
-            duration: Snackbar.LENGTH_SHORT,
-            action:{
-              text: "undo",
-              textColor: "green"
-            }})
-            const newData = { name, number };
-            setDatas(prevData => [...prevData, newData]);
-            setName('');
-            setDisplay(true)
-            setNumber('')
-            setTimeout(() => {
-              navigation.navigate("CONTACT-APP")
-              setDisplay(false)
-              Snackbar.show({
-                text: "SUCCESSFULLY REGISTERED!!",
-                duration: Snackbar.LENGTH_LONG,
-                action: {
-                    text: "UNDO",
-                    textColor: "green",
+      else{
+        Snackbar.show({
+          text: "Succesfully registered",
+          duration: Snackbar.LENGTH_SHORT,
+          action:{
+            text: "undo",
+            textColor: "green"
+          }})
+          const newData = { name, number };
+          setDatas(prevData => [...prevData, newData]);
+          setName('');
+          setDisplay(true)
+          setNumber('')
+          setTimeout(() => {
+            navigation.navigate("CONTACT-APP")
+            setDisplay(false)
+            Snackbar.show({
+              text: "SUCCESSFULLY REGISTERED!!",
+              duration: Snackbar.LENGTH_LONG,
+              action: {
+                  text: "UNDO",
+                  textColor: "green",
                 }
               })
-              }, 2000);
+              }, 4000);
             }
     }     
     else {
@@ -82,8 +87,13 @@ const AddContact = ({ navigation, route }) => {
   };
 
   return (
-    <View>
-      <Text style={{ marginLeft: 30, marginTop: 20,fontSize: 25,fontWeight: "800",textDecorationLine: "underline" }}>Enter Contact Details</Text>
+    <View style = {{backgroundColor: "white"}}>
+      <View style = {{flexDirection: "row",borderWidth: 0.8,textAlign:"center"}}>
+        <TouchableOpacity onPress={handlebacked}>
+          <Image source ={require("../../images/back.png")} style = {Styles.img4}></Image>
+        </TouchableOpacity>
+        <Text style={{marginTop: 13,fontSize: 25,fontWeight: "800"}}>Enter Contact Details</Text>
+      </View>
       <TextInput
         placeholder='Enter Name'
         value={name}
@@ -98,23 +108,34 @@ const AddContact = ({ navigation, route }) => {
         keyboardType='numeric'
       />
       <TouchableOpacity onPress={handleData}>
-        <Text style={Styles.btn}>Enter the data</Text>
+        <Text style={Styles.btn}>Enter Details</Text>
       </TouchableOpacity>
-
-      {display && <ActivityIndicator size="extralarge" color="#00ff00" style = {Styles.indicator}></ActivityIndicator>}
+      {display && <ActivityIndicator size="large" color="#00ff00" style = {Styles.indicator}></ActivityIndicator>}
+      <Text style = {{height: hp("40%")}}>
+      
+      </Text>
     </View>
+   
   );
 };
 
 const Styles = StyleSheet.create({
+  img4:{
+    height: hp("4%"),
+    width: wp("8%"),
+    marginLeft: wp("4%"),
+    marginTop: hp("2%"),
+    marginRight: wp("%"),
+    marginBottom: wp("3%"),
+  },
   name1: {
-    borderWidth: 1.5,
+    borderBottomWidth: 1.5,
     marginTop: 30,
     padding: 10,
     borderColor: 'black',
     width: 300,
     height: 70,
-    borderRadius: 12,
+    borderRadius: hp("1%"),
     marginLeft: 30,
     fontSize: 26,
     fontWeight: '500',
@@ -130,7 +151,7 @@ const Styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '500',
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'lightblue',
   },
   indicator:{
     marginTop:50,
